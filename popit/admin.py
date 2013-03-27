@@ -1,16 +1,9 @@
-from django.contrib import admin
-from {{ app_name }} import models
-
-# tweak to taste - simple at the top and more custom below
-
-
-# admin.site.register(models.FooBar)
-
-
-
-# class FooBarAdmin(admin.ModelAdmin):
-#     prepopulated_fields = {"slug": ["name"]}
-#     list_display  = [ 'slug', 'name', ]
-#     search_fields = ['name']
-# 
-# admin.site.register( models.FooBar, FooBarAdmin )
+# The admin in deliberately left blank.
+#
+# As the data stored in this app will primarily come from a PopIt API we don't
+# want to let people edit it locally, usless they really know what they are
+# doing.
+#
+# In time perhaps this admin will be smart enough that it can tell what data is
+# from a live popit API instance, and what is locally created, and allow you to
+# edit accordingly.
