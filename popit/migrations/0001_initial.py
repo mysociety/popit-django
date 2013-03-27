@@ -18,4 +18,4 @@ class Migration(SchemaMigration):
         
     }
 
-    complete_apps = ['{{ app_name }}']
+    complete_apps = ['popit']
