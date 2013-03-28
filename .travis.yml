@@ -1,0 +1,20 @@
+language: python
+
+# 2.6.1 is used on our servers
+python:
+  - "2.6"
+  - "2.7"
+
+# command to install dependencies
+install:
+  - "pip install -r requirements.txt --use-mirrors"
+
+# command to run tests
+script:
+  - ./manage.py test popit
+
+# report results in IRC
+notifications:
+  irc: "irc.mysociety.org#popit"
+  use_notice: true
+  skip_join: true
