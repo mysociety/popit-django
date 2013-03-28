@@ -6,11 +6,28 @@ Replace this with more appropriate tests for your application.
 """
 
 from django.test import TestCase
+from django.core.exceptions import ValidationError
+from django.db import IntegrityError
 
+from popit.models import ApiInstance
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
+class PopItInstanceTest(TestCase):
+    def test_url_constraints(self):
         """
-        Tests that 1 + 1 always equals 2.
+        Test that url is required and unique
         """
-        self.assertEqual(1 + 1, 2)
+        # create a good one
+        instance = ApiInstance(url="http://foo.com/api")
+        instance.save()
+        self.assertTrue(instance)
+        
+        # test that the url is required and must be a url - even when creating entries
+        # from code.
+        self.assertRaises(ValidationError, ApiInstance, url="not a url")
+        self.assertRaises(ValidationError, ApiInstance) # url missing
+
+        # test that we can't create a duplicate
+        def save_duplicate():
+            ApiInstance(url=instance.url).save()
+        self.assertRaises(IntegrityError, save_duplicate)
+        
