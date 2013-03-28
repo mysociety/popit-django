@@ -1,5 +1,5 @@
 from django.db import models
-from .fields import ApiInstanceURLField
+from .fields import ApiInstanceURLField, PopItURLField
 
 class ApiInstance(models.Model):
     """A specific PopIt API instance"""
@@ -16,6 +16,8 @@ class ApiInstance(models.Model):
 class PopItDocument(models.Model):
     # The API instance is required
     api_instance = models.ForeignKey('ApiInstance')
+    popit_url    = PopItURLField()
+
     name         = models.CharField(max_length=200)
 
     class Meta:
