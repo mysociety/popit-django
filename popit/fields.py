@@ -64,6 +64,10 @@ class PopItURLField(models.URLField):
     def to_python(self, value):
         value = super(PopItURLField, self).to_python(value)
 
+        # convert None to empty string
+        if value is None:
+            value = ''
+
         # Want immediate validation on creation (if there is a value)
         if value != '':
             for validator in self.validators:

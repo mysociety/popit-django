@@ -46,6 +46,9 @@ class PersonTest(TestCase):
         # check that the empty popit_url is returned as empty string
         self.assertEqual(person_no_url_1.popit_url, '')
         
+        # check it is empty string when fetched from db
+        self.assertEqual( Person.objects.get(pk=person_no_url_1.id).popit_url, '')
+        
         # url to use when testing
         popit_url = popit_url=instance.url + '/person/123'
 
