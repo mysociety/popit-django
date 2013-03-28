@@ -1,10 +1,12 @@
 """Settings that need to be set in order to run the tests."""
-import os
 
+import os
 
 DEBUG = True
 USE_TZ = True
 SITE_ID = 1
+
+SECRET_KEY = '...something secure here...'
 
 DATABASES = {
     "default": {

@@ -12,3 +12,18 @@ us it is the pre-cursor to this work.
 This is alpha code and subject to frequent and backwards incompatible change.
 Feel free to experiment but do not use in production until this message is
 removed.
+
+## Development
+
+``` bash
+git clone https://github.com/mysociety/popit-django.git
+cd popit-django
+
+virtualenv --no-site-packages .venv
+. .venv/bin/activate
+
+pip install -r requirements.txt --use-mirrors
+
+./manage.py test popit
+```
+
