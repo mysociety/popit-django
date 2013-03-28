@@ -32,7 +32,7 @@ add_introspection_rules([], ["^popit\.fields\.PopItURLField"])
 
 class PopItURLField(models.URLField):
     # This field has some specific requirements - namely it is optional (locally
-    # created docs won't have it) bit if it has a value it should be unique. Should
+    # created docs won't have it) but if it has a value it should be unique. Should
     # also be a URL.
     #
     # This mean that it should store a NULL in the db when it is empty so that the
@@ -40,8 +40,13 @@ class PopItURLField(models.URLField):
     # empty string).
     #
     # Not implemented here would be a check that the url starts with the url of the
-    # PopIt instance that the object is lniked to.
-    
+    # PopIt instance that the object is linked to.
+    #
+    # NOTE - this relies on the database behaviour regarding UNIQUE constraints, and
+    # NULL fields. If your DB does not allow several NULLs in a UNIQUE index then
+    # this won't work. Will work in Postgres and SQLite3, might work in mySQL
+    # depending on table type, probably won't work in SQLServer.
+        
     description = "A url field that enforces validation and uniqueness if not empty"
     
     __metaclass__ = models.SubfieldBase
