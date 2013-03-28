@@ -11,7 +11,7 @@ from django.db import IntegrityError
 
 from popit.models import ApiInstance
 
-class PopItInstanceTest(TestCase):
+class ApiInstanceTest(TestCase):
     def test_url_constraints(self):
         """
         Test that url is required and unique
