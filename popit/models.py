@@ -12,5 +12,7 @@ class ApiInstance(models.Model):
     # name
     # last_checked - for incremental updates
 
-
-# Create your models here.
+class Person(models.Model):
+    """A Person from a PopIt API instance"""
+    api_instance = models.ForeignKey('ApiInstance')
+    name         = models.CharField(max_length=200)
