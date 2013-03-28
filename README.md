@@ -1,5 +1,7 @@
 # PopIt Django App
 
+[![Build Status](https://travis-ci.org/mysociety/popit-django.png?branch=master)](https://travis-ci.org/mysociety/popit-django)
+
 A Django app that makes it easy to locally store and use data from one or more
 PopIt API instances.
 
