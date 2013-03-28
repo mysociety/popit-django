@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+
 from .fields import ApiInstanceURLField, PopItURLField
 
 class ApiInstance(models.Model):
@@ -19,6 +21,19 @@ class PopItDocument(models.Model):
     popit_url    = PopItURLField()
 
     name         = models.CharField(max_length=200)
+
+    def save(self, *args, **kwargs):
+        """
+        Add a check that the popit_url starts with the api_instance.url - so
+        that we can be sure that the url is coming from the correct api.
+        """
+        if self.popit_url:
+            try:
+                self.popit_url.index(self.api_instance.url)
+            except ValueError:
+                raise ValidationError("popit_url does not start with its api_instance.url")
+
+        super(PopItDocument, self).save(*args, **kwargs)
 
     class Meta:
         abstract = True

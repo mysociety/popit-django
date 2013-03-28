@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.db import IntegrityError
+from django.core.exceptions import ValidationError
 
 from popit.models import ApiInstance, Person
 
@@ -59,3 +60,11 @@ class PersonTest(TestCase):
         
         # try to create a duplicate one
         self.assertRaises(IntegrityError, Person.objects.create, api_instance=instance, name="Bob", popit_url=popit_url)
+
+        # try to create one with a bad URL
+        self.assertRaises(ValidationError, Person.objects.create, api_instance=instance, name="Bob", popit_url='This is not a URL')
+
+        # try to create one with a URL that does not start with the ApiInstance URL
+        # (implying that it is from a different instance)
+        self.assertRaises(ValidationError, Person.objects.create, api_instance=instance, name="Bob", popit_url='http://other.com/api/person/123')
+        

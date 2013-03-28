@@ -39,9 +39,6 @@ class PopItURLField(models.URLField):
     # DB constraints act as expected (default Django behaviour would be to store an
     # empty string).
     #
-    # Not implemented here would be a check that the url starts with the url of the
-    # PopIt instance that the object is linked to.
-    #
     # NOTE - this relies on the database behaviour regarding UNIQUE constraints, and
     # NULL fields. If your DB does not allow several NULLs in a UNIQUE index then
     # this won't work. Will work in Postgres and SQLite3, might work in mySQL
