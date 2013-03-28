@@ -32,3 +32,7 @@ INSTALLED_APPS = [
     'south',
     'popit',
 ]
+
+# Testing related
+TEST_POPIT_API_URL = 'http://localhost:3000/api'
+

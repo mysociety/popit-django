@@ -1,5 +1,9 @@
 language: python
 
+# need mongo for the popit-api we launch in the background
+services:
+  - mongodb
+
 # 2.6.1 is used on our servers
 python:
   - "2.6"
@@ -11,6 +15,7 @@ install:
 
 # command to run tests
 script:
+  - ./start_local_popit_api.bash
   - ./manage.py test popit -v 2
 
 # report results in IRC
