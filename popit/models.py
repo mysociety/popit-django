@@ -12,7 +12,16 @@ class ApiInstance(models.Model):
     # name
     # last_checked - for incremental updates
 
-class Person(models.Model):
-    """A Person from a PopIt API instance"""
+
+class PopItDocument(models.Model):
+    # The API instance is required
     api_instance = models.ForeignKey('ApiInstance')
     name         = models.CharField(max_length=200)
+
+    class Meta:
+        abstract = True
+
+
+class Person(PopItDocument):
+    """A Person from a PopIt API instance"""
+    pass
