@@ -11,7 +11,7 @@ install:
 
 # command to run tests
 script:
-  - ./manage.py test popit
+  - ./manage.py test popit -v 2
 
 # report results in IRC
 notifications:
