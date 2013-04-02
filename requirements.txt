@@ -2,4 +2,3 @@ Django
 South
 simplejson
 slumber
-setuptools>=0.6c11
