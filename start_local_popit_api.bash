@@ -32,6 +32,7 @@ if [ ! -e done.txt ]; then
 fi
 
 # install the required node modules
+npm install pow-mongodb-fixtures --quiet
 npm install --quiet
 
 # Run the server in the background. Send access logging to file.
