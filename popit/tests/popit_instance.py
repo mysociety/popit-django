@@ -41,4 +41,16 @@ class ApiInstanceTest(TestCase):
         instance.fetch_all_from_api()
     
         # check that the persons expected are loaded
-        self.assertTrue(Person.objects.get(name='Joe Bloggs'))
+        person = Person.objects.get(name='Joe Bloggs')
+        self.assertTrue(person)
+
+        # update the api to use a different fixture and check that the update is
+        # applied
+        instance_helpers.delete_api_database()
+        instance_helpers.load_test_data('rename_joe_blogs')
+        instance.fetch_all_from_api()
+        renamed = Person.objects.get(pk=person.id)
+        self.assertEqual(renamed.name, 'Josh Blaggs')
+
+
+        
