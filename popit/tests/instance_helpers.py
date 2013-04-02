@@ -48,7 +48,7 @@ def load_test_data(fixture_name='default'):
     test_fixtures_path = os.path.relpath( test_fixtures_path )
 
     # Usage: mongofixtures db_name path/to/fixtures.js
-    try:
-        output = subprocess.check_output([mongofixtures_path, database_name, test_fixtures_path], stderr=subprocess.STDOUT)
-    except subprocess.CalledProcessError as e:
-        raise Exception(e.output)
+    dev_null = open(os.devnull, 'w')
+    exit_code = subprocess.call([mongofixtures_path, database_name, test_fixtures_path], stdout=dev_null)
+    if exit_code:
+        raise Exception("Error loading fixtures for '%s'" % fixture_name)
