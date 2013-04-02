@@ -8,7 +8,8 @@ except ImportError:
     use_setuptools()
     from setuptools import setup
 import os
-from setuptools import setup
+from setuptools import setup, find_packages
+
 
 with open('requirements.txt') as f:
     required = f.read().splitlines()
@@ -22,13 +23,13 @@ setup(
     author_email='modules@mysociety.org',
     url='https://github.com/mysociety/popit-django',
     long_description=open('README.md', 'r').read(),
-    packages=[
-    ],
-    requires=[
-    ],
+
+    # Not convinced that this is correct - it skips the fixture which are .js files
+    packages=find_packages(),
+
+    requires=[],
     install_requires=required,
-    tests_require=[
-    ],
+    tests_require=[],
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
@@ -37,4 +38,5 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
     ],
+    test_suite='runtests.runtests',
 )

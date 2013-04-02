@@ -13,10 +13,11 @@ python:
 install:
   - "pip install -r requirements.txt --use-mirrors"
 
-# command to run tests
+# command to run tests, and check build still sane
 script:
   - ./start_local_popit_api.bash
-  - ./manage.py test popit -v 2
+  - python setup.py test
+  - python setup.py check
 
 # report results in IRC
 notifications:

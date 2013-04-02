@@ -1,3 +1,5 @@
 *.pyc
 .venv
 popit-api-for-testing
+build/
+popit_django.egg-info
