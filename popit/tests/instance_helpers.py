@@ -1,6 +1,6 @@
 import slumber
 import os
-from subprocess import call
+import subprocess
 
 from django.conf import settings
 
@@ -19,7 +19,7 @@ def get_api_database_name():
 def delete_api_database():
     name = get_api_database_name()
     dev_null = open(os.devnull, 'w')
-    call(["mongo", name, '--eval', 'db.dropDatabase()'], stdout=dev_null)
+    subprocess.call(["mongo", name, '--eval', 'db.dropDatabase()'], stdout=dev_null)
     
 def load_test_data(fixture_name='default'):
     """
@@ -39,10 +39,16 @@ def load_test_data(fixture_name='default'):
     database_name      = get_api_database_name()
     test_fixtures_path = os.path.join( project_root, 'popit/tests/fixtures/%s.js'%fixture_name )
 
+    # Check that the fixture exists
+    if not os.path.exists(test_fixtures_path):
+        raise Exception("Could not find fixture for %s at %s" % (fixture_name, test_fixtures_path))
+
     # Hack to deal with bad handling of absolute paths in mongofixtures.
     # Fix: https://github.com/powmedia/pow-mongodb-fixtures/pull/14
     test_fixtures_path = os.path.relpath( test_fixtures_path )
 
     # Usage: mongofixtures db_name path/to/fixtures.js
-    dev_null = open(os.devnull, 'w')
-    call([mongofixtures_path, database_name, test_fixtures_path], stdout=dev_null)
+    try:
+        output = subprocess.check_output([mongofixtures_path, database_name, test_fixtures_path], stderr=subprocess.STDOUT)
+    except subprocess.CalledProcessError as e:
+        raise Exception(e.output)
