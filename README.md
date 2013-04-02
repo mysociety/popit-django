@@ -11,6 +11,8 @@ us it is the pre-cursor to this work.
 
 ## WARNING - Alpha code
 
+This code is a work in progress - it is probably not useful to you yet.
+
 This is alpha code and subject to frequent and backwards incompatible change.
 Feel free to experiment but do not use in production until this message is
 removed.
