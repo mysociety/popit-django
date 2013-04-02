@@ -3,7 +3,6 @@ from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 
 from popit.models import ApiInstance, Person
-from popit.tests import instance_helpers
 
 class PersonTest(TestCase):
     def test_instance_is_required(self):
@@ -69,15 +68,3 @@ class PersonTest(TestCase):
         # (implying that it is from a different instance)
         self.assertRaises(ValidationError, Person.objects.create, api_instance=instance, name="Bob", popit_url='http://other.com/api/person/123')
         
-    def test_retrieve_all_from_instance(self):
-        """
-        Test that it is possible to retrieve several people from the instance.
-        """
-
-        # create the instance, delete contents and load test fixture
-        instance_helpers.delete_api_database()
-        instance_helpers.load_test_data()
-        instance = ApiInstance.objects.create(url=instance_helpers.get_api_url())
-        self.assertTrue(instance)
-
-    

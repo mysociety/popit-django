@@ -1,3 +1,5 @@
+import slumber
+
 from django.db import models
 from django.core.exceptions import ValidationError
 
@@ -14,6 +16,20 @@ class ApiInstance(models.Model):
     # name
     # last_checked - for incremental updates
 
+    def api_client(self, collection_name):
+        api = slumber.API(self.url).__getattr__(collection_name)
+        return api
+
+    def fetch_all_from_api(self):
+        """
+        Update all the local data from the API. This method actually delegates
+        to the other models.
+        """
+        
+        models = [Person]
+        for model in models:
+            model.fetch_all_from_api(instance=self)
+
 
 class PopItDocument(models.Model):
     # The API instance is required
@@ -21,6 +37,9 @@ class PopItDocument(models.Model):
     popit_url    = PopItURLField()
 
     name         = models.CharField(max_length=200)
+
+    class Meta:
+        abstract = True
 
     def save(self, *args, **kwargs):
         """
@@ -35,10 +54,69 @@ class PopItDocument(models.Model):
 
         super(PopItDocument, self).save(*args, **kwargs)
 
-    class Meta:
-        abstract = True
+
+    # This could possibly live on the manager and be called using Foo.objects.fetch_all_from_api(), perhaps ...
+    @classmethod
+    def fetch_all_from_api(cls, instance):
+        """
+        Get all the documents from the API and save them locally.
+        """
+
+        api_client = instance.api_client(cls.api_collection_name)
+
+        # This is hacky, but I can't see a documented way to get to the url.
+        # Liable to change if slumber changes their internals.
+        collection_url = api_client._store['base_url']
+
+        for doc in api_client.get()['result']:
+            url = collection_url + '/' + doc['id']
+            
+            # Add the url to the doc
+            doc['popit_url'] = url
+            
+            cls.update_from_api_results(instance=instance, doc=doc)
+
+    @classmethod
+    def update_from_api_results(cls, instance, doc):
+
+        # load the object from the db, or create it
+        try:
+            obj = cls.objects.get(popit_url=doc['popit_url'])
+        except cls.DoesNotExist:
+            obj = cls(api_instance=instance, popit_url=doc['popit_url'])
+
+        # extract the dict of settable fields and update the obj
+        settable = cls.extract_settable(doc)
+        [setattr(obj, key, value) for (key, value) in settable.items()]
+
+        obj.save()
+        
+        # TODO create/update related records here
+        # obj.update_related_from_api_result(doc)
+
+
+    @classmethod
+    def extract_settable(cls, doc):
+        """
+        You should override this method to extract the fields from the API
+        result that should be set on the top level object. The response should
+        be a dict of keys that are the field names, and values that are what
+        should be set to them.
+
+        This only applies to fields unique to the class - generic ones like
+        popit_url are set elsewhere.
+        """
+        raise NotImplementedError("Override extract_settable in '%s'" % cls)
 
 
 class Person(PopItDocument):
     """A Person from a PopIt API instance"""
-    pass
+
+    api_collection_name = 'persons'
+
+    @classmethod
+    def extract_settable(cls, doc):
+        return {
+            'name': doc['name']
+        }
+

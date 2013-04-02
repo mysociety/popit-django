@@ -2,7 +2,8 @@ from django.test import TestCase
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
-from popit.models import ApiInstance
+from popit.models import ApiInstance, Person
+from popit.tests import instance_helpers
 
 class ApiInstanceTest(TestCase):
     def test_url_constraints(self):
@@ -24,3 +25,20 @@ class ApiInstanceTest(TestCase):
             ApiInstance(url=instance.url).save()
         self.assertRaises(IntegrityError, save_duplicate)
         
+
+    def test_retrieve_all_from_instance(self):
+        """
+        Test that it is possible to retrieve several people from the instance.
+        """
+    
+        # create the instance, delete contents and load test fixture
+        instance_helpers.delete_api_database()
+        instance_helpers.load_test_data()
+        instance = ApiInstance.objects.create(url=instance_helpers.get_api_url())
+        self.assertTrue(instance)
+    
+        # Tell the instance to sync data
+        instance.fetch_all_from_api()
+    
+        # check that the persons expected are loaded
+        self.assertTrue(Person.objects.get(name='Joe Bloggs'))
