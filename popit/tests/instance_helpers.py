@@ -21,7 +21,7 @@ def delete_api_database():
     dev_null = open(os.devnull, 'w')
     call(["mongo", name, '--eval', 'db.dropDatabase()'], stdout=dev_null)
     
-def load_test_data():
+def load_test_data(fixture_name='default'):
     """
     Use the mongofixtures CLI tool provided by the pow-mongodb-fixtures package
     used by popit-api to load some test data into db. Don't use the test fixture
@@ -37,7 +37,7 @@ def load_test_data():
     # gather the args for the call
     mongofixtures_path = os.path.join( project_root, 'popit-api-for-testing/node_modules/.bin/mongofixtures' )
     database_name      = get_api_database_name()
-    test_fixtures_path = os.path.join( project_root, 'popit/tests/fixtures.js' )
+    test_fixtures_path = os.path.join( project_root, 'popit/tests/fixtures/%s.js'%fixture_name )
 
     # Hack to deal with bad handling of absolute paths in mongofixtures.
     # Fix: https://github.com/powmedia/pow-mongodb-fixtures/pull/14
