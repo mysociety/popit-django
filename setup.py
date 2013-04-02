@@ -7,6 +7,12 @@ except ImportError:
     from ez_setup import use_setuptools
     use_setuptools()
     from setuptools import setup
+import os
+from setuptools import setup
+
+with open('requirements.txt') as f:
+    required = f.read().splitlines()
+
 
 setup(
     name='popit-django',
@@ -17,12 +23,10 @@ setup(
     url='https://github.com/mysociety/popit-django',
     long_description=open('README.md', 'r').read(),
     packages=[
-        'FIXME'
     ],
     requires=[
     ],
-    install_requires=[
-    ],
+    install_requires=required,
     tests_require=[
     ],
     classifiers=[
