@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
+from django.core.management import call_command
 
 from popit.models import ApiInstance, Person
 from popit.tests import instance_helpers
@@ -53,4 +54,17 @@ class ApiInstanceTest(TestCase):
         self.assertEqual(renamed.name, 'Josh Blaggs')
 
 
+    def test_retrieve_all_management_command(self):
+        
+        # create the instance, delete contents and load test fixture
+        instance_helpers.delete_api_database()
+        instance_helpers.load_test_data()
+        ApiInstance.objects.create(url=instance_helpers.get_api_url())
+        
+        # call the management command to retrieve all
+        call_command('popit_retrieve_all')
+        
+        # check that the persons expected are loaded
+        person = Person.objects.get(name='Joe Bloggs')
+        self.assertTrue(person)
         

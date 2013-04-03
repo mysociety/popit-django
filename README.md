@@ -64,6 +64,12 @@ python manage.py syncdb
 python manage.py migrate
 ```
 
+Now create a `popit.models.ApiInstance` entry and fetch all the documents from that API instance:
+
+``` bash
+python manage.py popit_retrieve_all
+```
+
 ## Database notes
 
 For some of the referential integrity we use a `UNIQUE INDEX` to prevent
