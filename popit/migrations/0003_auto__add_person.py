@@ -12,6 +12,7 @@ class Migration(SchemaMigration):
         db.create_table(u'popit_person', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('api_instance', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['popit.ApiInstance'])),
+            ('popit_url', self.gf('popit.fields.PopItURLField')(default='', max_length=200, unique=True, null=True, blank=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=200)),
         ))
         db.send_create_signal(u'popit', ['Person'])
@@ -32,7 +33,8 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Person'},
             'api_instance': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['popit.ApiInstance']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '200'})
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            'popit_url': ('popit.fields.PopItURLField', [], {'default': "''", 'max_length': '200', 'unique': 'True', 'null': 'True', 'blank': 'True'})
         }
     }
 
