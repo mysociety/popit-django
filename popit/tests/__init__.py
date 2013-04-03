@@ -1,2 +1,2 @@
-from .popit_instance import *
-from .popit_person import *
+from .test_popit_instance import *
+from .test_popit_person   import *
