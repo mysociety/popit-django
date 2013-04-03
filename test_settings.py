@@ -11,7 +11,7 @@ SECRET_KEY = '...something secure here...'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME":   "popit-django",
+        "NAME":   "popit-django.sqlite3",
     }
 }
 
