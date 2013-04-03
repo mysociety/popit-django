@@ -28,17 +28,18 @@ if [ ! -e done.txt ]; then
 
   echo "{ \"serverPort\": $PORT }" > config/general.json
 
+  # install the required node modules
+  npm install pow-mongodb-fixtures --quiet
+  npm install --quiet
+
   touch done.txt;
 fi
 
-# install the required node modules
-npm install pow-mongodb-fixtures --quiet
-npm install --quiet
 
 # Run the server in the background. Send access logging to file.
-supervisor server.js > access.log &
+node server.js > access.log &
 
 # give it a chance to start and then print out the url to it
-sleep 5
+sleep 2
 echo "API should now be running on http://localhost:$PORT/api"
 
