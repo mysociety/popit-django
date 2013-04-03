@@ -11,7 +11,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='popit-django',
-    version='0.0.0',
+    version='0.0.1',
     description='Use PopIt stored data in your Django app',
     license='GNU Affero General Public License v3',
     author='mySociety',
