@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # This file mainly exists to allow python setup.py test to work.
 #
 # You can test all the variations of tests by running:
