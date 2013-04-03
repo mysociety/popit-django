@@ -4,3 +4,4 @@ popit-api-for-testing
 build/
 popit_django.egg-info
 popit-django.sqlite3
+dist

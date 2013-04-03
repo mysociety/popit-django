@@ -1,0 +1,2 @@
+include *.md *.rst *.txt *.py *.bash
+recursive-include popit/tests *.js
