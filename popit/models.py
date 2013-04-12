@@ -16,6 +16,9 @@ class ApiInstance(models.Model):
     # name
     # last_checked - for incremental updates
 
+    def __unicode__(self):
+        return 'PopIt instance <%s>' % self.url
+
     def api_client(self, collection_name):
         api = slumber.API(self.url).__getattr__(collection_name)
         return api
@@ -40,6 +43,9 @@ class PopItDocument(models.Model):
 
     class Meta:
         abstract = True
+
+    def __unicode__(self):
+        return self.name
 
     def save(self, *args, **kwargs):
         """
