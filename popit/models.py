@@ -127,7 +127,7 @@ class Person(PopItDocument):
     def extract_settable(cls, doc):
         return {
             'name': doc['name'],
-            'summary': doc['summary'] if doc.has_key('summary') else '',
-            'image': doc['image'] if doc.has_key('image') else''
+            'summary': doc.get('summary', ''),
+            'image': doc.get('image', '')
         }
 
