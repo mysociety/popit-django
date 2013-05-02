@@ -120,9 +120,14 @@ class Person(PopItDocument):
 
     api_collection_name = 'persons'
 
+    image        = models.URLField(blank=True)
+    summary      = models.TextField(blank=True)
+
     @classmethod
     def extract_settable(cls, doc):
         return {
-            'name': doc['name']
+            'name': doc['name'],
+            'summary': doc['summary'] if doc.has_key('summary') else '',
+            'image': doc['image'] if doc.has_key('image') else''
         }
 
