@@ -9,5 +9,7 @@ exports.persons = {
   joeBloggs: {
     _id: "joe-bloggs",
     name: "Joe Bloggs",
+    summary:"A very nice man",
+    image:"http://foo.com/joe.jpg"
   },
 };
