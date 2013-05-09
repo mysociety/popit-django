@@ -45,6 +45,10 @@ class ApiInstanceTest(TestCase):
         person = Person.objects.get(name='Joe Bloggs')
         self.assertTrue(person)
 
+        self.assertEqual(person.name, 'Joe Bloggs')
+        self.assertEqual(person.summary, 'A very nice man')
+        self.assertEqual(person.image, 'http://foo.com/joe.jpg')
+
         # update the api to use a different fixture and check that the update is
         # applied
         instance_helpers.delete_api_database()
