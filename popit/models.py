@@ -100,6 +100,7 @@ class PopItDocument(models.Model):
         # TODO create/update related records here
         # obj.update_related_from_api_result(doc)
 
+        return obj
 
     @classmethod
     def extract_settable(cls, doc):
