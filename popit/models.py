@@ -132,3 +132,21 @@ class Person(PopItDocument):
             'image': doc.get('image', '')
         }
 
+
+    def post_to_the_api(self):
+        api = self.api_instance.api_client(self.api_collection_name)
+        #this is a missing method to extract this to PopitDocument
+        instance_dict = {
+            "name":self.name,
+            "image":self.image,
+            "summary":self.summary
+        }
+        #this is a missing method to extract this to PopitDocument        
+        response = api.post(instance_dict)
+        self.popit_url = self.api_instance.url +"/%(collection_name)s/%(id)s"%{
+            'collection_name':self.api_collection_name,
+            'id':response['result']['id']
+        }
+        self.save()
+
+
