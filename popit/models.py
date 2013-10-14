@@ -38,6 +38,7 @@ class PopItDocument(models.Model):
     # The API instance is required
     api_instance = models.ForeignKey('ApiInstance')
     popit_url    = PopItURLField()
+    popit_id     = models.CharField(max_length=200, null=True) # null for migration at least
 
     name         = models.CharField(max_length=200)
 
@@ -75,9 +76,10 @@ class PopItDocument(models.Model):
         collection_url = api_client._store['base_url']
 
         for doc in api_client.get()['result']:
-            url = collection_url + '/' + doc['id']
             
-            # Add the url to the doc
+            # Add id and url to the doc
+            doc['popit_id']  = doc['id']
+            url = collection_url + '/' + doc['id']
             doc['popit_url'] = url
             
             cls.update_from_api_results(instance=instance, doc=doc)
@@ -111,7 +113,7 @@ class PopItDocument(models.Model):
         should be set to them.
 
         This only applies to fields unique to the class - generic ones like
-        popit_url are set elsewhere.
+        popit_url are set elsewhere (in fetch_all_from_api).
         """
         raise NotImplementedError("Override extract_settable in '%s'" % cls)
 
