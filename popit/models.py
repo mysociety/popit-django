@@ -77,8 +77,7 @@ class PopItDocument(models.Model):
 
         for doc in api_client.get()['result']:
             
-            # Add id and url to the doc
-            doc['popit_id']  = doc['id']
+            # Add url to the doc
             url = collection_url + '/' + doc['id']
             doc['popit_url'] = url
             
@@ -91,7 +90,8 @@ class PopItDocument(models.Model):
         try:
             obj = cls.objects.get(popit_url=doc['popit_url'])
         except cls.DoesNotExist:
-            obj = cls(api_instance=instance, popit_url=doc['popit_url'])
+            # this is where generic fields (popit_url, popit_id) get set
+            obj = cls(api_instance=instance, popit_url=doc['popit_url'], popit_id=doc['id'])
 
         # extract the dict of settable fields and update the obj
         settable = cls.extract_settable(doc)
@@ -113,7 +113,7 @@ class PopItDocument(models.Model):
         should be set to them.
 
         This only applies to fields unique to the class - generic ones like
-        popit_url are set elsewhere (in fetch_all_from_api).
+        popit_url are set elsewhere (in update_from_api_results).
         """
         raise NotImplementedError("Override extract_settable in '%s'" % cls)
 
