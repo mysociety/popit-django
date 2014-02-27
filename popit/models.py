@@ -20,7 +20,7 @@ class ApiInstance(models.Model):
         return 'PopIt instance <%s>' % self.url
 
     def api_client(self, collection_name):
-        api = slumber.API(self.url).__getattr__(collection_name)
+        api = getattr(slumber.API(self.url), collection_name)
         return api
 
     def fetch_all_from_api(self):
