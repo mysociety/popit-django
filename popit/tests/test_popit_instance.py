@@ -71,4 +71,15 @@ class ApiInstanceTest(TestCase):
         # check that the persons expected are loaded
         person = Person.objects.get(name='Joe Bloggs')
         self.assertTrue(person)
-        
+
+
+    def test_retrieve_more_than_30(self):
+        """It retrieves more than 30 people even when paginated"""
+        instance_helpers.delete_api_database()
+        instance_helpers.load_test_data("more_than_30_persons")
+
+        instance = ApiInstance.objects.create(url=instance_helpers.get_api_url())
+
+        instance.fetch_all_from_api()
+        self.assertGreater(instance.person_set.all().count(), 30)
+        self.assertEquals(instance.person_set.all().count(), 32)

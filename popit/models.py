@@ -74,14 +74,17 @@ class PopItDocument(models.Model):
         # This is hacky, but I can't see a documented way to get to the url.
         # Liable to change if slumber changes their internals.
         collection_url = api_client._store['base_url']
-
-        for doc in api_client.get()['result']:
-            
-            # Add url to the doc
-            url = collection_url + '/' + doc['id']
-            doc['popit_url'] = url
-            
-            cls.update_from_api_results(instance=instance, doc=doc)
+        current_page = 1
+        while True:
+            response = api_client.get(page=current_page)
+            for doc in response['result']:
+                # Add url to the doc
+                url = collection_url + '/' + doc['id']
+                doc['popit_url'] = url
+                cls.update_from_api_results(instance=instance, doc=doc)
+            if not response['has_more']:
+                break
+            current_page += 1
 
     @classmethod
     def update_from_api_results(cls, instance, doc):
