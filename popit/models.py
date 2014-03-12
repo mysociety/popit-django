@@ -78,13 +78,10 @@ class PopItDocument(models.Model):
         while True:
             response = api_client.get(page=current_page)
             for doc in response['result']:
-                
                 # Add url to the doc
                 url = collection_url + '/' + doc['id']
                 doc['popit_url'] = url
-                
                 cls.update_from_api_results(instance=instance, doc=doc)
-                
             if not response['has_more']:
                 break
             current_page += 1

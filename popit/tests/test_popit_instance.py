@@ -78,8 +78,8 @@ class ApiInstanceTest(TestCase):
         instance_helpers.delete_api_database()
         instance_helpers.load_test_data("more_than_30_persons")
 
-        ApiInstance.objects.create(url=instance_helpers.get_api_url())
+        instance = ApiInstance.objects.create(url=instance_helpers.get_api_url())
 
-        call_command('popit_retrieve_all')
-        self.assertGreater(Person.objects.count(), 30)
-        self.assertEquals(Person.objects.count(), 32)
+        instance.fetch_all_from_api()
+        self.assertGreater(instance.person_set.all().count(), 30)
+        self.assertEquals(instance.person_set.all().count(), 32)
