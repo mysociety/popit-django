@@ -127,9 +127,4 @@ exports.persons = {
     _id: "joe-bloggs30",
     name: "Josh Blaggs30",
   }
-
-
-
-
-
 };
