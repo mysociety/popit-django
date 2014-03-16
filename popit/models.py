@@ -75,13 +75,27 @@ class PopItDocument(models.Model):
         # Liable to change if slumber changes their internals.
         collection_url = api_client._store['base_url']
 
-        for doc in api_client.get()['result']:
+        page = 1
+        keep_fetching = True
+
+        while keep_fetching:
+            response = api_client.get(per_page=50, page=page)
+            # In versions of popit-api before 0.0.14 there was no
+            # pagination; in that case there will be no 'has_more' key
+            # in the response, and all results will be returned.  In
+            # versions 0.0.14 and later results are paginated by default
+            # and there will always be a 'has_more' key indicating
+            # whether further pages needed to be fetched or not.
+            keep_fetching = response.get('has_more', False)
+            page += 1
+
+            for doc in response['result']:
+
+                # Add url to the doc
+                url = collection_url + '/' + doc['id']
+                doc['popit_url'] = url
             
-            # Add url to the doc
-            url = collection_url + '/' + doc['id']
-            doc['popit_url'] = url
-            
-            cls.update_from_api_results(instance=instance, doc=doc)
+                cls.update_from_api_results(instance=instance, doc=doc)
 
     @classmethod
     def update_from_api_results(cls, instance, doc):
