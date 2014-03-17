@@ -72,3 +72,14 @@ class ApiInstanceTest(TestCase):
         person = Person.objects.get(name='Joe Bloggs')
         self.assertTrue(person)
         
+    def test_pagination(self):
+
+        # create the instance, delete contents and load test fixture
+        instance_helpers.delete_api_database()
+        instance_helpers.load_test_data('too_many_people')
+        instance = ApiInstance.objects.create(url=instance_helpers.get_api_url())
+        instance.fetch_all_from_api()
+
+        people_fetched = Person.objects.all()
+
+        self.assertEqual(people_fetched.count(), 65)
