@@ -34,6 +34,41 @@ class ApiInstance(models.Model):
             model.fetch_all_from_api(instance=self)
 
 
+def get_paginated_generator(api_client):
+    """This generator can be used to get() paginated results
+
+    If 'api_client' is a Slumber resource, you can use this generator
+    as so:
+
+      for doc in get_paginated_generator(api_client):
+          pass
+
+    and if the remote PopIt instance returns paginated results, it
+    will return all them, whereas the following:
+
+      for doc in api_client.get()['result']:
+          pass
+
+    ... would only return the first page."""
+
+    page = 1
+    keep_fetching = True
+
+    while keep_fetching:
+        response = api_client.get(per_page=50, page=page)
+        # In versions of popit-api before 0.0.14 there was no
+        # pagination; in that case there will be no 'has_more' key
+        # in the response, and all results will be returned.  In
+        # versions 0.0.14 and later results are paginated by default
+        # and there will always be a 'has_more' key indicating
+        # whether further pages needed to be fetched or not.
+        keep_fetching = response.get('has_more', False)
+        page += 1
+
+        for doc in response['result']:
+            yield doc
+
+
 class PopItDocument(models.Model):
     # The API instance is required
     api_instance = models.ForeignKey('ApiInstance')
@@ -75,27 +110,13 @@ class PopItDocument(models.Model):
         # Liable to change if slumber changes their internals.
         collection_url = api_client._store['base_url']
 
-        page = 1
-        keep_fetching = True
+        for doc in get_paginated_generator(api_client):
 
-        while keep_fetching:
-            response = api_client.get(per_page=50, page=page)
-            # In versions of popit-api before 0.0.14 there was no
-            # pagination; in that case there will be no 'has_more' key
-            # in the response, and all results will be returned.  In
-            # versions 0.0.14 and later results are paginated by default
-            # and there will always be a 'has_more' key indicating
-            # whether further pages needed to be fetched or not.
-            keep_fetching = response.get('has_more', False)
-            page += 1
+            # Add url to the doc
+            url = collection_url + '/' + doc['id']
+            doc['popit_url'] = url
 
-            for doc in response['result']:
-
-                # Add url to the doc
-                url = collection_url + '/' + doc['id']
-                doc['popit_url'] = url
-            
-                cls.update_from_api_results(instance=instance, doc=doc)
+            cls.update_from_api_results(instance=instance, doc=doc)
 
     @classmethod
     def update_from_api_results(cls, instance, doc):
