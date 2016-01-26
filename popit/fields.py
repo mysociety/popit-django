@@ -21,15 +21,6 @@ class ApiInstanceURLField(models.URLField):
 
     __metaclass__ = models.SubfieldBase
 
-    def to_python(self, value):
-        value = super(ApiInstanceURLField, self).to_python(value)
-
-        # Want immediate validation on creation
-        for validator in self.validators:
-            validator(value)
-
-        return value
-
 
 class PopItURLField(models.URLField):
     # This field has some specific requirements - namely it is optional (locally

@@ -18,13 +18,13 @@ class ApiInstanceTest(TestCase):
         
         # test that the url is required and must be a url - even when creating entries
         # from code.
-        self.assertRaises(ValidationError, ApiInstance, url="not a url")
-        self.assertRaises(ValidationError, ApiInstance) # url missing
+        with self.assertRaises(ValidationError):
+            bad_url_instance = ApiInstance(url="not a url")
+            bad_url_instance.full_clean()
 
         # test that we can't create a duplicate
-        def save_duplicate():
+        with self.assertRaises(IntegrityError):
             ApiInstance(url=instance.url).save()
-        self.assertRaises(IntegrityError, save_duplicate)
         
 
     def test_retrieve_all_from_instance(self):
