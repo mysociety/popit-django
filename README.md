@@ -1,3 +1,5 @@
+# DEPRECATED - Please consider using [openpolis/django-popolo](https://github.com/openpolis/django-popolo) instead
+
 **NOTE: Development on PopIt has stopped and it is no longer being maintained. [Please read the announcement to find out more](https://groups.google.com/forum/#!msg/poplus/hIFdan_rIS8/36rx3dLPCQAJ).**
 
 # PopIt Django App
