@@ -49,13 +49,11 @@ project's `requirements.txt`.
 pip install popit-django --use-mirrors
 ```
 
-In your `settings.py` add `south` and `popit` to your `INSTALLED_APPS` (`popit`
-uses South to manage database migrations so make sure it comes first).
+In your `settings.py` add `popit` to your `INSTALLED_APPS`.
 
 ``` python
 INSTALLED_APPS = [
     # ...
-    'south',
     'popit',
     # ....
 ]
@@ -64,7 +62,6 @@ INSTALLED_APPS = [
 Setup the database:
 
 ``` bash
-python manage.py syncdb
 python manage.py migrate
 ```
 
@@ -113,4 +110,3 @@ pip install -r requirements.txt --use-mirrors
 # Run the tests
 ./manage.py test popit
 ```
-

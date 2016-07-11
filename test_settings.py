@@ -29,7 +29,6 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = [
-    'south',
     'popit',
 ]
 

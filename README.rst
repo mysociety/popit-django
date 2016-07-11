@@ -51,15 +51,12 @@ your project's ``requirements.txt``.
 
     pip install popit-django --use-mirrors
 
-In your ``settings.py`` add ``south`` and ``popit`` to your
-``INSTALLED_APPS`` (``popit`` uses South to manage database migrations
-so make sure it comes first).
+In your ``settings.py`` add ``popit`` to your ``INSTALLED_APPS``..
 
 .. code:: python
 
     INSTALLED_APPS = [
         # ...
-        'south',
         'popit',
         # ....
     ]
@@ -68,7 +65,6 @@ Setup the database:
 
 .. code:: bash
 
-    python manage.py syncdb
     python manage.py migrate
 
 Now create a ``popit.models.ApiInstance`` entry and fetch all the

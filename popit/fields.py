@@ -2,13 +2,6 @@ import re
 
 from django.db import models
 
-try:
-    from south.modelsinspector import add_introspection_rules
-    add_introspection_rules([], ["^popit\.fields\.ApiInstanceURLField"])
-    add_introspection_rules([], ["^popit\.fields\.PopItURLField"])
-except ImportError:
-    pass
-
 
 class ApiInstanceURLField(models.URLField):
     # Have a specific field for this because we might want to add some smarts at
