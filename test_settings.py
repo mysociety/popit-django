@@ -15,6 +15,8 @@ DATABASES = {
     }
 }
 
+MIDDLEWARE_CLASSES = []
+
 ROOT_URLCONF = 'popit.tests.urls'
 
 CURRENT_DIR = os.path.dirname(__file__)

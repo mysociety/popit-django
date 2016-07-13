@@ -10,9 +10,12 @@
 import os, sys
 os.environ['DJANGO_SETTINGS_MODULE'] = 'test_settings'
 
+import django
 from django.core.management import call_command
 
 def runtests():
+    if django.VERSION[:2] >= (1, 7):
+        django.setup()
     # use the call_command approach so that we are as similar to running
     # './manage.py test' as possible. Notably we need the South migrations to be
     # run.
