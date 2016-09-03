@@ -6,7 +6,6 @@ services:
 
 # 2.6.1 is used on our servers
 python:
-  - "2.6"
   - "2.7"
 
 # Should only really uncomment this just before a release - no point making
