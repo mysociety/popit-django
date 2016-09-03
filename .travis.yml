@@ -18,8 +18,8 @@ python:
 
 # command to install dependencies
 install:
-  - pip install "Django$DJANGO_VERSION" --use-mirrors
-  - pip install -r requirements.txt --use-mirrors
+  - pip install "Django$DJANGO_VERSION"
+  - pip install -r requirements.txt
 
 # command to run tests, and check build still sane
 # Would like to run 'python setup.py check' too, but it does not work on 2.6
